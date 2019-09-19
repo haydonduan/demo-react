@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import { testAction } from './actions/testAction';
+import { connect } from 'react-redux';
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface IProps extends IPropsFromState, IPropsFromDispatch {
 }
 
-export default App;
+class App extends Component<IProps, {}> {
+  onClick = () => {
+    this.props.simpleAction('owl')
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <p className="App-intro">
+          To get started, edit <code>src/App.js</code> and save to reload
+        </p>
+
+        <div>
+          display the status: {JSON.stringify(this.props.mark)}
+        </div>
+        <button onClick={this.onClick}>test redux</button>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state: any) => ({
+  mark: state.mark
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  simpleAction: (params: any) => dispatch(testAction(params))
+});
+
+type IPropsFromState = ReturnType<typeof mapStateToProps>;
+type IPropsFromDispatch = ReturnType<typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
