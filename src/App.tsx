@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
 import { testAction } from './actions/testAction';
 import { connect } from 'react-redux';
+import style from './App.less';
 
 interface IProps extends IPropsFromState, IPropsFromDispatch {
 }
@@ -13,12 +13,8 @@ class App extends Component<IProps, {}> {
 
   render() {
     return (
-      <div className="App">
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload
-        </p>
-
-        <div>
+      <div className={style.APP}>
+        <div className="no-module">
           display the status: {JSON.stringify(this.props.mark)}
         </div>
         <button onClick={this.onClick}>test redux</button>
