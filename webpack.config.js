@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -9,7 +10,7 @@ module.exports = {
     },
     output: {
         filename: '[name].[hash].js',
-        path: path.join(__dirname, './dist')
+        path: path.join(__dirname, './dist'),
     },
     devtool: "source-map",
     module: {
@@ -47,14 +48,13 @@ module.exports = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            // 用哪个html作为模板
-            // 在src目录下创建一个index.html页面当做模板来用
-            template: './public/index.html',
-            hash: true, // 会在打包好的bundle.js后面加上hash串
+            template: './public/index.html'
         }),
-        new webpack.ProvidePlugin({
-            "React": "react",
-        }),
+        new CopyWebpackPlugin([
+            {
+                from: 'public',
+            },
+        ]),
     ],
     devServer: {
         inline: true,
