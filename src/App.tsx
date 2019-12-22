@@ -2,22 +2,37 @@ import React, { Component } from 'react';
 import { testAction } from './actions/testAction';
 import { connect } from 'react-redux';
 import style from './App.less';
+//@ts-ignore
+import IframeResizer from 'iframe-resizer-react/dist/index';
 
 interface IProps extends IPropsFromState, IPropsFromDispatch {
 }
 
 class App extends Component<IProps, {}> {
-  onClick = () => {
-    this.props.simpleAction('owl')
-  };
+  iframeRef: any;
+
+  handleOnScroll = () => {
+    this.iframeRef.sendMessage('parent message : ' + new Date())
+  }
+
+  componentDidMount(): void {
+    window.addEventListener('scroll', this.handleOnScroll);
+  }
 
   render() {
     return (
-      <div className={style.APP}>
-        <div className="no-module">
-          display the status: {JSON.stringify(this.props.mark)}
+      <div className={style.APP} onScroll={this.handleOnScroll}>
+        <div style={{backgroundColor: 'red', height: 300, width: '100%'}}>
+          adfads
         </div>
-        <button onClick={this.onClick}>test redux</button>
+
+        <IframeResizer
+          forwardRef={(ref: any) => this.iframeRef = ref}
+          heightCalculationMethod="lowestElement"
+          log={false}
+          src="http://localhost:8000/#/product-catalogue"
+          style={{ width: '1px', minWidth: '100%' }}
+        />
       </div>
     );
   }
