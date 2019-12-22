@@ -12,6 +12,7 @@ class App extends Component<IProps, {}> {
   iframeRef: any;
 
   handleOnScroll = () => {
+    // 如果这里不行，则需要加上第二个参数为：子网页的域名, 可以直接写死，或者让父iframe做配置影响不同环境的url
     this.iframeRef.sendMessage('parent message : ' + new Date())
   }
 
@@ -22,10 +23,6 @@ class App extends Component<IProps, {}> {
   render() {
     return (
       <div className={style.APP} onScroll={this.handleOnScroll}>
-        <div style={{backgroundColor: 'red', height: 300, width: '100%'}}>
-          adfads
-        </div>
-
         <IframeResizer
           forwardRef={(ref: any) => this.iframeRef = ref}
           heightCalculationMethod="lowestElement"
